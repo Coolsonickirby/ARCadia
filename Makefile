@@ -44,7 +44,7 @@ DATA		:=	data
 ICON		:=	resources/icon/icon.jpg
 INCLUDES	:=	include
 APP_TITLE	:=	bookmARC
-APP_AUTHOR	:=	Coolsonickirby
+APP_AUTHOR	:=	Coolsonickirby, Raytwo, Kalomaze, Mowjoh
 APP_VERSION	:=	1.0
 
 ROMFS				:=	resources
