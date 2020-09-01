@@ -1,4 +1,4 @@
-# Ultimate Manager (temp name)
+# bookmARC
 A simple manager for ARCropolis mods
 
 Don't expect the code written here to be of any quality at all lol.
