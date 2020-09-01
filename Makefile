@@ -37,14 +37,14 @@ include $(DEVKITPRO)/libnx/switch_rules
 #   of a homebrew executable (.nro). This is intended to be used for sysmodules.
 #   NACP building is skipped as well.
 #---------------------------------------------------------------------------------
-TARGET		:=	bookmARC
+TARGET		:=	arcadia
 BUILD		:=	build.nx
 SOURCES		:=	source
 DATA		:=	data
 ICON		:=	resources/icon/icon.jpg
 INCLUDES	:=	include
-APP_TITLE	:=	bookmARC
-APP_AUTHOR	:=	Coolsonickirby, Raytwo, Kalomaze, Mowjoh
+APP_TITLE	:=	ARCadia
+APP_AUTHOR	:=	Coolsonickirby, Raytwo, Kalomaze, CVillacura 
 APP_VERSION	:=	1.0
 
 ROMFS				:=	resources

@@ -26,7 +26,7 @@
 #include "mods_tabs.hpp"
 #include "config.hpp"
 
-#define BOREALIS_APP_TITLE "bookmARC"
+#define BOREALIS_APP_TITLE "ARCadia"
 
 int main(int argc, char* argv[])
 {
@@ -42,8 +42,7 @@ int main(int argc, char* argv[])
     // Create a sample view
     brls::TabFrame* rootFrame = new brls::TabFrame();
     rootFrame->setTitle(BOREALIS_APP_TITLE);
-    rootFrame->setIcon(BOREALIS_ASSET("icon/icon.jpg"));
-
+    rootFrame->setIcon(BOREALIS_ASSET("icon/icon_transparent.png"));
 
     ModsList mods;
     if(!Config::initConfig()){
