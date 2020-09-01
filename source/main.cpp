@@ -19,9 +19,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <switch.h>
 
 #include <borealis.hpp>
 #include <string>
+#include "mods_tabs.hpp"
+#include "config.hpp"
 
 #define BOREALIS_APP_TITLE "Ultimate Manager"
 
@@ -39,17 +42,51 @@ int main(int argc, char* argv[])
     // Create a sample view
     brls::TabFrame* rootFrame = new brls::TabFrame();
     rootFrame->setTitle(BOREALIS_APP_TITLE);
-    rootFrame->setIcon(BOREALIS_ASSET("icon/borealis.jpg"));
+    rootFrame->setIcon(BOREALIS_ASSET("icon/icon.jpg"));
 
-    rootFrame->registerAction("Launch Smash", brls::Key::X, [] {
+
+    ModsList mods;
+    if(!Config::initConfig()){
+        appletRequestLaunchApplication(0x01006A800016E000, NULL);
+        brls::Application::quit();
+    };
+
+    if(Config::config_info.infos.version != "1.1.2"){
+        rootFrame->setFooterText("Mismatched Config File!");
+    }
+
+    rootFrame->registerAction("Launch Smash Ultimate", brls::Key::X, [] {
         appletRequestLaunchApplication(0x01006A800016E000, NULL);
         return true;
     });
 
-    ModsList mods;
+    brls::List* testList = new brls::List();
 
-    rootFrame->addTab("Mods", mods.arcModsList());
-    rootFrame->addTab("Skyline Plugins", mods.skylinePluginsList());
+    brls::ListItem* arcPath = new brls::ListItem("Notify ARC Path");
+    arcPath->getClickEvent()->subscribe([](brls::View* view) {
+        brls::Application::notify(Config::config_info.paths.arc);
+    });
+    
+    brls::ListItem* streamPath = new brls::ListItem("Notify Stream Path");
+    streamPath->getClickEvent()->subscribe([](brls::View* view) {
+        brls::Application::notify(Config::config_info.paths.stream);
+    });
+    
+    brls::ListItem* ummPath = new brls::ListItem("Notify UMM Path");
+    ummPath->getClickEvent()->subscribe([](brls::View* view) {
+        brls::Application::notify(Config::config_info.paths.umm);
+    });
+
+    testList->addView(arcPath);
+    testList->addView(streamPath);
+    testList->addView(ummPath);
+
+    rootFrame->addTab("First Tab", testList);
+
+    rootFrame->addTab("UMM Tab", mods.arcModsList());
+
+    // rootFrame->addTab("Mods", mods.arcModsList());
+    // rootFrame->addTab("Skyline Plugins", mods.skylinePluginsList());
 
     // Add the root view to the stack
     brls::Application::pushView(rootFrame);
