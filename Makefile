@@ -37,13 +37,13 @@ include $(DEVKITPRO)/libnx/switch_rules
 #   of a homebrew executable (.nro). This is intended to be used for sysmodules.
 #   NACP building is skipped as well.
 #---------------------------------------------------------------------------------
-TARGET		:=	ultimate_manager
+TARGET		:=	bookmARC
 BUILD		:=	build.nx
 SOURCES		:=	source
 DATA		:=	data
 ICON		:=	resources/icon/icon.jpg
 INCLUDES	:=	include
-APP_TITLE	:=	Ultimate Manager
+APP_TITLE	:=	bookmARC
 APP_AUTHOR	:=	Coolsonickirby
 APP_VERSION	:=	1.0
 

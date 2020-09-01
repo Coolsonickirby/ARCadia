@@ -26,7 +26,7 @@
 #include "mods_tabs.hpp"
 #include "config.hpp"
 
-#define BOREALIS_APP_TITLE "Ultimate Manager"
+#define BOREALIS_APP_TITLE "bookmARC"
 
 int main(int argc, char* argv[])
 {
@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
         brls::Application::quit();
     };
 
-    if(Config::config_info.infos.version != "1.1.2"){
+    if(Config::config_info.infos.version != "1.2.0"){
         rootFrame->setFooterText("Mismatched Config File!");
     }
 
@@ -81,9 +81,9 @@ int main(int argc, char* argv[])
     testList->addView(streamPath);
     testList->addView(ummPath);
 
-    rootFrame->addTab("First Tab", testList);
+    // rootFrame->addTab("First Tab", testList);
 
-    rootFrame->addTab("UMM Tab", mods.arcModsList());
+    rootFrame->addTab("Mods Tab", mods.arcModsList());
 
     // rootFrame->addTab("Mods", mods.arcModsList());
     // rootFrame->addTab("Skyline Plugins", mods.skylinePluginsList());
