@@ -9,6 +9,8 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <algorithm>
+#include <vector>
 
 #include "inipp.h"
 #include "config.hpp"
@@ -28,6 +30,8 @@ std::string clean_dot(std::string str){
         return str;
 }
 
+bool compareFunction (const ModInfo &lhs, const ModInfo &rhs) {return lhs.name<rhs.name;}
+
 brls::List* ModsList::arcModsList()
 {
 
@@ -36,16 +40,28 @@ brls::List* ModsList::arcModsList()
     bool is_empty = true;
     std::string base_path = replace(Config::config_info.paths.umm, "sd:", "sdmc:");
 
+
+    if(!std::filesystem::exists(base_path)){
+        brls::ListItem* noFolderFound = new brls::ListItem(std::string(Config::config_info.paths.umm + " doesn't exist!"));
+        arcModsList->addView(noFolderFound);
+        return arcModsList;
+    }
+
+    std::vector<ModInfo> umm_children;
+
+
     for (auto& directoryPath : std::filesystem::directory_iterator(base_path))
     {
         is_empty = false;
+        ModInfo info;
         std::string mod_path = directoryPath.path();
 
         inipp::Ini<char> info_ini;
 
         std::string info_path = std::string(directoryPath.path()) + "/info.ini";
 
-        std::string clean_folder_name = clean_dot(directoryPath.path().filename());
+        info.mod_path = mod_path;
+        info.folder_name = directoryPath.path().filename();
         std::string name;
         std::string author;
         std::string version;
@@ -55,7 +71,7 @@ brls::List* ModsList::arcModsList()
 
         if (!is)
         {
-            name        = clean_folder_name;
+            name        = clean_dot(info.folder_name);
             author      = "Unavaliable";
             version     = "Unavaliable";
             description = "Unavaliable";
@@ -70,6 +86,32 @@ brls::List* ModsList::arcModsList()
             inipp::extract(info_ini.sections["ModInfo"]["version"], version);
             inipp::extract(info_ini.sections["ModInfo"]["description"], description);
         }
+
+        info.name = name;
+        info.author = author;
+        info.version = version;
+        info.description = description;
+
+        umm_children.push_back(info);
+    }
+
+    if(ARCadiaConfig::sort_option == "name"){
+        std::sort(umm_children.begin(),umm_children.end(),compareFunction);
+    }
+
+    if(ARCadiaConfig::sort_desc){
+        std::reverse(umm_children.begin(), umm_children.end());
+    }
+
+    for (ModInfo umm_child : umm_children )
+    {
+        std::string mod_path = umm_child.mod_path;
+
+        std::string clean_folder_name = clean_dot(umm_child.folder_name);
+        std::string name = umm_child.name;
+        std::string author = umm_child.author;
+        std::string version = umm_child.version;
+        std::string description = umm_child.description;
 
         brls::ListItem* dialogItem = new brls::ListItem(name);
 
@@ -102,7 +144,7 @@ brls::List* ModsList::arcModsList()
             dialog->open();
         });
 
-        if (std::string(directoryPath.path().filename()).at(0) == '.')
+        if (umm_child.folder_name.at(0) == '.')
         {
             dialogItem->setChecked(false);
         } else {

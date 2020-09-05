@@ -6,8 +6,10 @@
 #include <stdio.h>
 #include <switch.h>
 #include <toml.hpp>
+#include "mini/ini.h"
 
 #define CONFIG_PATH "sdmc://atmosphere/contents/01006A800016E000/romfs/arcropolis.toml"
+#define ARCADIA_CONFIG_PATH "sdmc://switch/arcadia.ini"
 
 class Infos {
     public:
@@ -32,6 +34,43 @@ class ConfigLayout {
         Infos infos;
         Paths paths;
         Miscellaneous misc;
+};
+
+
+class ARCadiaConfig {
+    private:
+        inline static mINI::INIStructure ini;
+    public:
+        inline static std::string sort_option;
+        inline static bool sort_desc;
+        
+
+        static bool initConfig(){    
+            mINI::INIFile file(ARCADIA_CONFIG_PATH);
+            file.read(ini);
+            if(!std::filesystem::exists(ARCADIA_CONFIG_PATH)){
+                sort_option = "name";
+                sort_desc = true;
+                ini["config"]["sort_option"] = sort_option;
+                ini["config"]["sort_desc"] = std::to_string(sort_desc);
+                file.generate(ini);
+                return true;
+            } else {
+                sort_option = ini["config"]["sort_option"];
+                if(ini["config"]["sort_desc"] == "0"){
+                    sort_desc = false;
+                }else{
+                    sort_desc = true;
+                }
+                return true;
+            }
+        }
+
+        static bool write(std::string section, std::string key, std::string value){
+            mINI::INIFile file(ARCADIA_CONFIG_PATH);
+            ini[section][key] = value;
+            return file.write(ini);
+        }
 };
 
 
