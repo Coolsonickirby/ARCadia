@@ -10,6 +10,7 @@
 
 #define CONFIG_PATH "sdmc://atmosphere/contents/01006A800016E000/romfs/arcropolis.toml"
 #define ARCADIA_CONFIG_PATH "sdmc://switch/arcadia.ini"
+#define SYSTEM_SETTINGS "sdmc://atmosphere/config/system_settings.ini"
 
 class Infos {
     public:
@@ -88,7 +89,6 @@ class Config {
                 
                 const auto& paths_table = toml::find(config_data, "paths");
                 config_info.paths.arc  = toml::find<std::string>(paths_table, "arc");
-                config_info.paths.stream  = toml::find<std::string>(paths_table, "stream");
                 config_info.paths.umm  = toml::find<std::string>(paths_table, "umm");
                 
                 const auto& misc_table = toml::find(config_data, "misc");
@@ -98,4 +98,12 @@ class Config {
                 return true;
             }
         };
+
+        static bool updateSystemSettings(){
+            mINI::INIStructure ini;
+            mINI::INIFile file(SYSTEM_SETTINGS);
+            file.read(ini);
+            ini["ro"]["ease_nro_restriction"] = "u8!0x1";
+            return file.generate(ini);
+        }
 };

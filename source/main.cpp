@@ -46,6 +46,9 @@ int main(int argc, char* argv[])
     rootFrame->setIcon(BOREALIS_ASSET("icon/icon_transparent.png"));
 
     ModsList mods;
+
+    Config::updateSystemSettings();
+
     if (!Config::initConfig())
     {
         brls::Dialog* dialog = new brls::Dialog("ARCropolis config file not detected!\nPlease run Smash Ultimate with ARCropolis set up!");
@@ -66,10 +69,10 @@ int main(int argc, char* argv[])
     {
         ARCadiaConfig::initConfig();
 
-        if (Config::config_info.infos.version != "1.2.0")
-        {
-            rootFrame->setFooterText("Mismatched Config File!");
-        }
+        // if (Config::config_info.infos.version != "1.2.0")
+        // {
+        //     rootFrame->setFooterText("Mismatched Config File!");
+        // }
 
         rootFrame->registerAction("Launch Smash Ultimate", brls::Key::X, [] {
             appletRequestLaunchApplication(0x01006A800016E000, NULL);
