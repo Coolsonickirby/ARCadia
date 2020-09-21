@@ -72,9 +72,9 @@ brls::List* ModsList::arcModsList()
         if (!is)
         {
             name        = clean_dot(info.folder_name);
-            author      = "Unavaliable";
-            version     = "Unavaliable";
-            description = "Unavaliable";
+            author      = "Unavailable";
+            version     = "Unavailable";
+            description = "Unavailable";
         }
         else
         {
