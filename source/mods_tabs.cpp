@@ -71,6 +71,7 @@ brls::List* ModsList::arcModsList()
 
         if (!is)
         {
+          //If no info.ini exists
             name        = clean_dot(info.folder_name);
             author      = "Unavailable";
             version     = "Unavailable";
@@ -78,6 +79,7 @@ brls::List* ModsList::arcModsList()
         }
         else
         {
+          //If info.ini does exist
             info_ini.parse(is);
             info_ini.default_section(info_ini.sections["ModInfo"]);
 
@@ -155,6 +157,7 @@ brls::List* ModsList::arcModsList()
     }
 
     if(is_empty){
+      //No mod folders found
         brls::ListItem* noFolderFound = new brls::ListItem(std::string("No Mod Folders found in ") + Config::config_info.paths.umm);
         arcModsList->addView(noFolderFound);
         return arcModsList;
