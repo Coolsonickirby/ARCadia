@@ -1,5 +1,6 @@
 #pragma once
 #include <borealis.hpp>
+#include <vector>
 
 struct ModInfo {
     public:
@@ -14,5 +15,6 @@ struct ModInfo {
 class ModsList{
     public:
         brls::List* arcModsList();
-        brls::List* skylinePluginsList();
+        std::vector<brls::ListItem*> skylinePlugins();
+        brls::List* quasarWorkspaces();
 };

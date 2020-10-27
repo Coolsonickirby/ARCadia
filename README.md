@@ -10,9 +10,9 @@ Don't expect the code written here to be of any quality at all lol.
 <br>
 [Kalomaze](https://gamebanana.com/members/1491583) - Current Logo
 <br>
-[Mowjoh](https://gamebanana.com/members/1513589) - Former Name (bookmARC)
+[Mowjoh](https://gamebanana.com/members/1513589) - Former Name (bookmARC), [Quasar](https://github.com/Mowjoh/Quasar)
 <br>
 [CVillacura](https://gamebanana.com/members/1513589) - Current Name
 <br>
 [Matthias C. M. Troffaes (mcmtroffaes)](https://github.com/mcmtroffaes/) - [IniPP](https://github.com/mcmtroffaes/inipp)<br>
-[Toru Niina](https://github.com/ToruNiina/) - [toml11](https://github.com/ToruNiina/toml11)
+[Mark Gillard](https://github.com/marzer/) - [toml++](https://github.com/marzer/tomlplusplus/)

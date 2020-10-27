@@ -28,6 +28,10 @@
 #include "mods_tabs.hpp"
 
 #define BOREALIS_APP_TITLE "ARCadia"
+#define ARCROPOLIS_NRO "sdmc://atmosphere/contents/01006A800016E000/romfs/skyline/plugins/libarcropolis.nro"
+#define SUBSDK_9 "sdmc://atmosphere/contents/01006A800016E000/exefs/subsdk9"
+#define MAIN_NPDM "sdmc://atmosphere/contents/01006A800016E000/exefs/main.npdm"
+
 
 int main(int argc, char* argv[])
 {
@@ -69,10 +73,14 @@ int main(int argc, char* argv[])
     {
         ARCadiaConfig::initConfig();
 
-        // if (Config::config_info.infos.version != "1.2.0")
-        // {
-        //     rootFrame->setFooterText("Mismatched Config File!");
-        // }
+        if(!std::filesystem::exists(MAIN_NPDM))
+            rootFrame->setFooterText("main.npdm is missing!");
+        else if(!std::filesystem::exists(SUBSDK_9))
+            rootFrame->setFooterText("subsdk_9 is missing!");
+        else if (!std::filesystem::exists(ARCROPOLIS_NRO))
+            rootFrame->setFooterText("libarcropolis.nro is missing!");
+        else
+            rootFrame->setFooterText("ARCropolis Version: " + std::string(Config::config_info.infos.version));
 
         rootFrame->registerAction("Launch Smash Ultimate", brls::Key::X, [] {
             appletRequestLaunchApplication(0x01006A800016E000, NULL);
@@ -137,8 +145,17 @@ int main(int argc, char* argv[])
 
         optionsList->addView(sortOption);
         optionsList->addView(sortOrder);
+        brls::Label* skylinePluginsLabel = new brls::Label(brls::LabelStyle::REGULAR, "Skyline Plugins", true);
+        optionsList->addView(skylinePluginsLabel);
 
-        rootFrame->addTab("Mods Tab", mods.arcModsList());
+
+        for(auto view : mods.skylinePlugins()){
+            optionsList->addView(view);
+        }
+
+        rootFrame->addTab("Mods", mods.arcModsList());
+
+        rootFrame->addTab("Workspaces", mods.quasarWorkspaces());
 
         rootFrame->addTab("Settings", optionsList);
 
