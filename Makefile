@@ -45,7 +45,7 @@ ICON		:=	resources/icon/icon.jpg
 INCLUDES	:=	include
 APP_TITLE	:=	ARCadia
 APP_AUTHOR	:=	Coolsonickirby, Raytwo, Kalomaze, CVillacura 
-APP_VERSION	:=	1.4
+APP_VERSION	:=	2.0
 
 ROMFS				:=	resources
 BOREALIS_PATH		:=	.

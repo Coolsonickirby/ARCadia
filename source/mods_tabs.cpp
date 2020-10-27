@@ -86,7 +86,7 @@ brls::List* ModsList::arcModsList()
 
         if (!is)
         {
-          //If no info.ini exists
+            //If no info.ini exists
             name        = clean_dot(info.folder_name);
             author      = "Unavailable";
             version     = "Unavailable";
@@ -94,7 +94,7 @@ brls::List* ModsList::arcModsList()
         }
         else
         {
-          //If info.ini does exist
+            //If info.ini does exist
             info_ini.parse(is);
             info_ini.default_section(info_ini.sections["ModInfo"]);
 
@@ -176,14 +176,10 @@ brls::List* ModsList::arcModsList()
         arcModsList->addView(dialogItem);
     }
 
-    if(is_empty){
-<<<<<<< HEAD
+    if (is_empty)
+    {
         //No mod folders found
-        brls::ListItem* noFolderFound = new brls::ListItem("No Mod Folders");
-=======
-      //No mod folders found
         brls::ListItem* noFolderFound = new brls::ListItem(std::string("No Mod Folders found in ") + Config::config_info.paths.umm);
->>>>>>> 4c54166d04020eba972225ef7213ecc88813560e
         arcModsList->addView(noFolderFound);
         return arcModsList;
     }
@@ -197,7 +193,7 @@ brls::List* ModsList::quasarWorkspaces()
 
     brls::ListItem* dialogItem = new brls::ListItem("Default (sd:/ultimate/mods)");
 
-    if(Config::config_info.paths.umm == "sd:/ultimate/mods")
+    if (Config::config_info.paths.umm == "sd:/ultimate/mods")
         dialogItem->setChecked(true);
 
     dialogItem->getClickEvent()->subscribe([](brls::View* view) {
@@ -233,9 +229,8 @@ brls::List* ModsList::quasarWorkspaces()
     {
         brls::ListItem* dialogItem = new brls::ListItem(quasar_workspace.folder_name);
 
-        if(quasar_workspace.mod_path == Config::config_info.paths.umm)
+        if (quasar_workspace.mod_path == Config::config_info.paths.umm)
             dialogItem->setChecked(true);
-        
 
         // dialogItem->registerAction("Show Info", brls::Key::Y, [name, author, version, description] {
         //     return true;
@@ -250,8 +245,6 @@ brls::List* ModsList::quasarWorkspaces()
 
         quasarWorkspacesList->addView(dialogItem);
     }
-
-
 
     return quasarWorkspacesList;
 }
