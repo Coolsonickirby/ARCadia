@@ -177,8 +177,13 @@ brls::List* ModsList::arcModsList()
     }
 
     if(is_empty){
+<<<<<<< HEAD
         //No mod folders found
         brls::ListItem* noFolderFound = new brls::ListItem("No Mod Folders");
+=======
+      //No mod folders found
+        brls::ListItem* noFolderFound = new brls::ListItem(std::string("No Mod Folders found in ") + Config::config_info.paths.umm);
+>>>>>>> 4c54166d04020eba972225ef7213ecc88813560e
         arcModsList->addView(noFolderFound);
         return arcModsList;
     }
