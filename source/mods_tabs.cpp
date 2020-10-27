@@ -179,7 +179,7 @@ brls::List* ModsList::arcModsList()
     if (is_empty)
     {
         //No mod folders found
-        brls::ListItem* noFolderFound = new brls::ListItem(std::string("No Mod Folders found in ") + Config::config_info.paths.umm);
+        brls::ListItem* noFolderFound = new brls::ListItem("No Mod Folders Found");
         arcModsList->addView(noFolderFound);
         return arcModsList;
     }
@@ -187,9 +187,9 @@ brls::List* ModsList::arcModsList()
     return arcModsList;
 }
 
-brls::List* ModsList::quasarWorkspaces()
+brls::List* ModsList::workspaces()
 {
-    brls::List* quasarWorkspacesList = new brls::List();
+    brls::List* workspacesList = new brls::List();
 
     brls::ListItem* dialogItem = new brls::ListItem("Default (sd:/ultimate/mods)");
 
@@ -202,51 +202,64 @@ brls::List* ModsList::quasarWorkspaces()
         brls::Application::quit();
     });
 
-    quasarWorkspacesList->addView(dialogItem);
+    workspacesList->addView(dialogItem);
 
     if (!std::filesystem::exists(QUASAR_WORKSPACES))
-        return quasarWorkspacesList;
+        return workspacesList;
 
-    std::vector<ModInfo> quasar_workspaces;
+    std::vector<ModInfo> workspaces_vec;
 
-    for (auto& directoryPath : std::filesystem::directory_iterator(QUASAR_WORKSPACES))
+    for (auto& directoryPath : std::filesystem::directory_iterator("sdmc:/ultimate/"))
     {
+        if(directoryPath.path().filename() == "mods")
+            continue;
+
         ModInfo info;
 
         info.mod_path    = replace(directoryPath.path(), "sdmc:", "sd:");
         info.folder_name = directoryPath.path().filename();
 
-        quasar_workspaces.push_back(info);
+        workspaces_vec.push_back(info);
+    }
+
+    for (auto& directoryPath : std::filesystem::directory_iterator(QUASAR_WORKSPACES))
+    {
+        ModInfo info;
+
+        info.mod_path    = replace(directoryPath.path(), "sdmc:", "sd:") + "/mods";
+        info.folder_name = directoryPath.path().filename();
+
+        workspaces_vec.push_back(info);
     }
 
     if (ARCadiaConfig::sort_option == "name")
-        std::sort(quasar_workspaces.begin(), quasar_workspaces.end(), compareFunction);
+        std::sort(workspaces_vec.begin(), workspaces_vec.end(), compareFunction);
 
     if (ARCadiaConfig::sort_desc)
-        std::reverse(quasar_workspaces.begin(), quasar_workspaces.end());
+        std::reverse(workspaces_vec.begin(), workspaces_vec.end());
 
-    for (ModInfo quasar_workspace : quasar_workspaces)
+    for (ModInfo workspace_item : workspaces_vec)
     {
-        brls::ListItem* dialogItem = new brls::ListItem(quasar_workspace.folder_name);
+        brls::ListItem* dialogItem = new brls::ListItem(workspace_item.folder_name);
 
-        if (quasar_workspace.mod_path == Config::config_info.paths.umm)
+        if (workspace_item.mod_path == Config::config_info.paths.umm)
             dialogItem->setChecked(true);
 
         // dialogItem->registerAction("Show Info", brls::Key::Y, [name, author, version, description] {
         //     return true;
         // });
 
-        dialogItem->getClickEvent()->subscribe([quasar_workspace](brls::View* view) {
-            brls::Application::notify(quasar_workspace.mod_path);
-            Config::config_info.paths.umm = quasar_workspace.mod_path;
+        dialogItem->getClickEvent()->subscribe([workspace_item](brls::View* view) {
+            brls::Application::notify(workspace_item.mod_path);
+            Config::config_info.paths.umm = workspace_item.mod_path;
             Config::saveConfig();
             brls::Application::quit();
         });
 
-        quasarWorkspacesList->addView(dialogItem);
+        workspacesList->addView(dialogItem);
     }
 
-    return quasarWorkspacesList;
+    return workspacesList;
 }
 
 // REWORK THIS!

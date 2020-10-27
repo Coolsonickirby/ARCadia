@@ -16,5 +16,5 @@ class ModsList{
     public:
         brls::List* arcModsList();
         std::vector<brls::ListItem*> skylinePlugins();
-        brls::List* quasarWorkspaces();
+        brls::List* workspaces();
 };

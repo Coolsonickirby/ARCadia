@@ -155,7 +155,7 @@ int main(int argc, char* argv[])
 
         rootFrame->addTab("Mods", mods.arcModsList());
 
-        rootFrame->addTab("Workspaces", mods.quasarWorkspaces());
+        rootFrame->addTab("Workspaces", mods.workspaces());
 
         rootFrame->addTab("Settings", optionsList);
 
