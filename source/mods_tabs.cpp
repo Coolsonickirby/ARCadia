@@ -204,8 +204,6 @@ brls::List* ModsList::workspaces()
 
     workspacesList->addView(dialogItem);
 
-    if (!std::filesystem::exists(QUASAR_WORKSPACES))
-        return workspacesList;
 
     std::vector<ModInfo> workspaces_vec;
 
@@ -222,14 +220,16 @@ brls::List* ModsList::workspaces()
         workspaces_vec.push_back(info);
     }
 
-    for (auto& directoryPath : std::filesystem::directory_iterator(QUASAR_WORKSPACES))
-    {
-        ModInfo info;
+    if (std::filesystem::exists(QUASAR_WORKSPACES)){
+        for (auto& directoryPath : std::filesystem::directory_iterator(QUASAR_WORKSPACES))
+        {
+            ModInfo info;
 
-        info.mod_path    = replace(directoryPath.path(), "sdmc:", "sd:") + "/mods";
-        info.folder_name = directoryPath.path().filename();
+            info.mod_path    = replace(directoryPath.path(), "sdmc:", "sd:") + "/mods";
+            info.folder_name = directoryPath.path().filename();
 
-        workspaces_vec.push_back(info);
+            workspaces_vec.push_back(info);
+        }
     }
 
     if (ARCadiaConfig::sort_option == "name")

@@ -31,6 +31,7 @@
 #define ARCROPOLIS_NRO "sdmc://atmosphere/contents/01006A800016E000/romfs/skyline/plugins/libarcropolis.nro"
 #define SUBSDK_9 "sdmc://atmosphere/contents/01006A800016E000/exefs/subsdk9"
 #define MAIN_NPDM "sdmc://atmosphere/contents/01006A800016E000/exefs/main.npdm"
+#define ROM_PATH "sd://atmosphere/contents/01006A800016E000/romfs/"
 
 
 int main(int argc, char* argv[])
@@ -72,6 +73,10 @@ int main(int argc, char* argv[])
     else
     {
         ARCadiaConfig::initConfig();
+
+        if (Config::config_info.paths.umm.rfind("rom:/", 0) == 0) {
+            Config::replace(Config::config_info.paths.umm, "rom:/", ROM_PATH); 
+        }
 
         if(!std::filesystem::exists(MAIN_NPDM))
             rootFrame->setFooterText("main.npdm is missing!");
@@ -153,14 +158,20 @@ int main(int argc, char* argv[])
             optionsList->addView(view);
         }
 
-        rootFrame->addTab("Mods", mods.arcModsList());
+        std::string res = Config::config_info.paths.umm;
+
+        Config::replace(res, "sd:", "sdmc:");
+
+        if(std::filesystem::exists(res)){
+            rootFrame->addTab("Mods", mods.arcModsList());
+        }else{
+            brls::Application::notify("UMM Path does not exist! Will only display Workspaces and Settings!");
+        }
 
         rootFrame->addTab("Workspaces", mods.workspaces());
 
         rootFrame->addTab("Settings", optionsList);
 
-        // rootFrame->addTab("Mods", mods.arcModsList());
-        // rootFrame->addTab("Skyline Plugins", mods.skylinePluginsList());
 
         // Add the root view to the stack
         brls::Application::pushView(rootFrame);
