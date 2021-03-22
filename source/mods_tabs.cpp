@@ -28,14 +28,7 @@ std::string replace(std::string str, const std::string from, const std::string t
 
 int move_file(std::string og_path, std::string out_path)
 {
-    std::ifstream in(og_path, std::ios::in | std::ios::binary);
-    std::ofstream out(out_path, std::ios::out | std::ios::binary);
-    out << in.rdbuf();
-
-    in.close();
-    out.close();
-
-    return std::remove(og_path.c_str());
+    return std::rename(og_path.c_str(), out_path.c_str());
 }
 
 std::string clean_dot(std::string str)
